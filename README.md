@@ -1,2 +1,2 @@
 # Quantum-Civilizational-Engine
-The Quantum Civilizational Engine (QCE) is an experimental, multi-dimensional framework designed to model and simulate civilizational dynamics. By leveraging 14-Channel Quantum Logic, the engine maps complex human, environmental, and industrial timelines—derived from a 947-row dataset—onto a fault-tolerant quantum architecture.
+Quantum-Civilizational-Engine: A 14-channel quantum-mechanical framework for analyzing human societal evolution, supply chain dynamics, and strategic decision-making using topological quantum computation.
