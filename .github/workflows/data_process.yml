@@ -13,5 +13,8 @@ jobs:
         python-version: '3.9'
     - name: Install dependencies
       run: pip install pandas numpy
+   - name: List files
+      run: ls -R
     - name: Run Preprocessor
       run: python src/data_preprocessor.py
+
