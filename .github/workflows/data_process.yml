@@ -12,7 +12,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.10'
           
       - name: Install dependencies
         run: pip install pandas numpy qiskit qiskit-aer
@@ -20,8 +20,9 @@ jobs:
       - name: List files
         run: ls -R
         
-      - name: Run Ingestion & Preprocessor
+      - name: Run Full Quantum Pipeline
         run: |
           python src/data_preprocessor.py
           python src/data_ingestion.py
           python src/quantum_matrix_engine.py
+          python src/decision_decoder.py
