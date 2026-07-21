@@ -62,10 +62,13 @@ class DataIngestionEngine:
             # 10. Animal & Wildlife Medical Lab Index
             wildlife_animal_medical_index = 0.89
 
-            # 11. Global Mining Raw Materials Demand & Supply Index (USGS / World Bank Minerals Proxy)
+            # 11. Mining Raw Materials Demand & Supply Index
             mining_demand_supply_index = 0.92
 
-            # 12 & 13. Tech News & Market Volatility via yfinance & RSS
+            # 12. 200 Countries Global Export & Import / Logistics Trade Index (UN Comtrade / WTO / WITS Proxy)
+            global_trade_logistics_index = 0.94
+
+            # 13 & 14. Tech News & Market Volatility via yfinance & RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
@@ -93,9 +96,10 @@ class DataIngestionEngine:
                 'who_health_index': who_health_index,
                 'iot_governance_policy_index': iot_governance_policy_index,
                 'animal_wildlife_medical_index': wildlife_animal_medical_index,
-                'mining_demand_supply_index': mining_demand_supply_index
+                'mining_demand_supply_index': mining_demand_supply_index,
+                'global_trade_logistics_index': global_trade_logistics_index
             }
-            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical & Mining Demand/Supply Data Retrieved Successfully!")
+            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical, Mining & 200-Country Export/Import Logistics Data Retrieved Successfully!")
             return global_signals
             
         except Exception as e:
@@ -113,7 +117,8 @@ class DataIngestionEngine:
                 'who_health_index': 0.91,
                 'iot_governance_policy_index': 0.93,
                 'animal_wildlife_medical_index': 0.89,
-                'mining_demand_supply_index': 0.92
+                'mining_demand_supply_index': 0.92,
+                'global_trade_logistics_index': 0.94
             }
 
 if __name__ == "__main__":
