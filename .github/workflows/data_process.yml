@@ -26,3 +26,4 @@ jobs:
           python src/data_ingestion.py
           python src/quantum_matrix_engine.py
           python src/decision_decoder.py
+          python src/dashboard_generator.py
