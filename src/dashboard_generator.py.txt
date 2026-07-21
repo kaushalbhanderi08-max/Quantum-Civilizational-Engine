@@ -1,0 +1,78 @@
+import os
+
+def generate_html_dashboard(binary_state):
+    channel_names = [
+        "Q1: Location & Geo-Spatial State",
+        "Q2: Human Demographics & Age Matrix",
+        "Q3: Supply Chain & Raw Material Dynamics",
+        "Q4: Tech Adoption & AI/IoT Signals",
+        "Q5: Finance & Investment Allocation",
+        "Q6: Infrastructure Construction State",
+        "Q7: Manufacturing & Machinery Output",
+        "Q8: Testing & Certification Standards",
+        "Q9: Biological Sensing & Class State",
+        "Q10: Occupation & Timeline Sync",
+        "Q11: Logistics & Transport Network",
+        "Q12: Energy & Environmental Vibe",
+        "Q13: Policy & Governance Matrix",
+        "Q14: Civilization Long-term Roadmap"
+    ]
+
+    formatted_state = binary_state[::-1]
+    
+    cards_html = ""
+    for idx, bit in enumerate(formatted_state):
+        name = channel_names[idx] if idx < len(channel_names) else f"Q{idx+1}"
+        is_active = (bit == '1')
+        status = "OPTIMIZE / EXECUTE" if is_active else "HOLD / REBALANCE"
+        color_class = "active" if is_active else "hold"
+        badge = "ACTIVE (1)" if is_active else "HOLD (0)"
+
+        cards_html += f"""
+        <div class="card {color_class}">
+            <div class="card-title">{name}</div>
+            <div class="status-badge">{badge}</div>
+            <div class="card-status">{status}</div>
+        </div>
+        """
+
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>14-Channel Quantum Decision Dashboard</title>
+        <style>
+            body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f172a; color: #f8fafc; padding: 30px; }}
+            h1 {{ text-align: center; color: #38bdf8; margin-bottom: 10px; }}
+            .subtitle {{ text-align: center; color: #94a3b8; margin-bottom: 30px; }}
+            .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }}
+            .card {{ border-radius: 12px; padding: 20px; border: 1px solid #334155; background: #1e293b; position: relative; }}
+            .card.active {{ border-color: #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2); }}
+            .card.hold {{ border-color: #ef4444; opacity: 0.7; }}
+            .card-title {{ font-weight: bold; font-size: 1.1em; margin-bottom: 10px; color: #e2e8f0; }}
+            .status-badge {{ position: absolute; top: 15px; right: 15px; font-size: 0.8em; padding: 4px 8px; border-radius: 6px; background: #334155; }}
+            .active .status-badge {{ background: #15803d; color: #fff; }}
+            .hold .status-badge {{ background: #991b1b; color: #fff; }}
+            .card-status {{ font-size: 0.9em; font-weight: 600; margin-top: 15px; }}
+            .active .card-status {{ color: #4ade80; }}
+            .hold .card-status {{ color: #f87171; }}
+        </style>
+    </head>
+    <body>
+        <h1>🌐 14-Channel Quantum Decision Dashboard</h1>
+        <p class="subtitle">State Matrix: <strong>{binary_state}</strong> | Cybernetic Orchestration Engine</p>
+        <div class="grid">
+            {cards_html}
+        </div>
+    </body>
+    </html>
+    """
+
+    os.makedirs('output', exist_ok=True)
+    with open('output/dashboard.html', 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    print("Dashboard successfully generated at output/dashboard.html")
+
+if __name__ == "__main__":
+    generate_html_dashboard("10111010010010")
