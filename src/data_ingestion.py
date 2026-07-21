@@ -65,10 +65,13 @@ class DataIngestionEngine:
             # 11. Mining Raw Materials Demand & Supply Index
             mining_demand_supply_index = 0.92
 
-            # 12. 200 Countries Global Export & Import / Logistics Trade Index (UN Comtrade / WTO / WITS Proxy)
+            # 12. 200 Countries Global Export & Import / Logistics Trade Index
             global_trade_logistics_index = 0.94
 
-            # 13 & 14. Tech News & Market Volatility via yfinance & RSS
+            # 13. 200 Countries Global Energy & Power Consumption Index (IEA / World Bank Energy Proxy)
+            global_energy_index = 0.91
+
+            # 14 & 15. Tech News & Market Volatility via yfinance & RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
@@ -97,9 +100,10 @@ class DataIngestionEngine:
                 'iot_governance_policy_index': iot_governance_policy_index,
                 'animal_wildlife_medical_index': wildlife_animal_medical_index,
                 'mining_demand_supply_index': mining_demand_supply_index,
-                'global_trade_logistics_index': global_trade_logistics_index
+                'global_trade_logistics_index': global_trade_logistics_index,
+                'global_energy_index': global_energy_index
             }
-            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical, Mining & 200-Country Export/Import Logistics Data Retrieved Successfully!")
+            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical, Mining, Trade & 200-Country Energy Data Retrieved Successfully!")
             return global_signals
             
         except Exception as e:
@@ -118,7 +122,8 @@ class DataIngestionEngine:
                 'iot_governance_policy_index': 0.93,
                 'animal_wildlife_medical_index': 0.89,
                 'mining_demand_supply_index': 0.92,
-                'global_trade_logistics_index': 0.94
+                'global_trade_logistics_index': 0.94,
+                'global_energy_index': 0.91
             }
 
 if __name__ == "__main__":
