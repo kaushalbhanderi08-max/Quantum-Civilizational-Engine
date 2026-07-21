@@ -1,57 +1,72 @@
 import os
 import pandas as pd
 import yfinance as yf
+import wbgapi as wb
+import feedparser
 
 class DataIngestionEngine:
     def __init__(self):
         pass
         
-    def fetch_live_market_data(self):
+    def fetch_global_planetary_data(self):
         """
-        Yahoo Finance (yfinance) નો ઉપયોગ કરીને ફ્રીમાં રિયલ માર્કેટ ડેટા ફેચ કરો
+        1. World Bank Demographics (Population, Birth/Death rates)
+        2. Environment & Wildlife / Biodiversity Proxy
+        3. WTO / World Bank Economic Classes & Human Consumption
+        4. WEF Strategic Intelligence & Tech News via RSS
         """
         try:
-            # S&P 500 (^GSPC) અને Crude Oil / Gold જેવી કમોડિટીઝ માર્કેટ વોલેટિલિટી માટે
+            # 1. World Bank Population & Vital Statistics (SP.POP.TOTL, SP.DYN.CBRT.IN, SP.DYN.CDRT.IN)
+            pop_data = wb.data.get('SP.POP.TOTL', 'WLD', mrv=1)
+            population = float(next(iter(pop_data), {}).get('value', 8000000000))
+            
+            # 2. Environment / Tree / Biodiversity Proxy (Forest area % or CO2 emissions index from World Bank)
+            forest_data = wb.data.get('AG.LND.FRST.ZS', 'WLD', mrv=1)
+            forest_index = float(next(iter(forest_data), {}).get('value', 31.0)) / 100.0 # Normalized
+            
+            # 3. Economic Classes / Consumption Proxy (World Bank Poverty Headcount or GNI per capita)
+            gni_data = wb.data.get('NY.GNP.PCAP.CD', 'WLD', mrv=1)
+            gni_value = float(next(iter(gni_data), {}).get('value', 12000.0))
+            middle_class_index = min(gni_value / 50000.0, 1.0)
+            
+            # 4 & 5. WEF / Tech News Feeds via Free RSS (Yahoo Finance Tech / TechCrunch / Reuters)
+            rss_url = "https://finance.yahoo.com/news/rssindex"
+            feed = feedparser.parse(rss_url)
+            tech_sentiment = 0.95
+            if feed.entries:
+                # જો ન્યૂઝ ફીડ્સ ચાલુ હોય તો ટેક સેન્ટિમેન્ટ કેલ્ક્યુલેટ કરો
+                tech_sentiment = min(0.99, 0.90 + (len(feed.entries) / 1000.0))
+
+            # Existing Market Volatility via yfinance
             ticker = yf.Ticker("^GSPC")
             history = ticker.history(period="5d")
-            
+            market_volatility = 0.05
             if not history.empty:
                 recent_close = history['Close'].iloc[-1]
                 prev_close = history['Close'].iloc[-2]
-                volatility = abs(recent_close - prev_close) / prev_close
-                # નોર્મલાઇઝ્ડ સ્કેલ
-                market_volatility = min(float(volatility * 10), 1.0)
-            else:
-                market_volatility = 0.5
-                
-            # વૈશ્વિક સપ્લાય ચેઈન અથવા ટ્રેડ ઇન્ડેક્સ માટે શિપિંગ/લાજિસ્ટિક્સ ડેટા (જેમ કે BDI અથવા ETF)
-            shipping_ticker = yf.Ticker("BDRY") # DryShips / Shipping ETF
-            shipping_hist = shipping_ticker.history(period="5d")
-            if not shipping_hist.empty:
-                supply_index = float(shipping_hist['Close'].iloc[-1] / 100)
-                supply_chain_index = max(0.0, min(supply_index, 1.0))
-            else:
-                supply_chain_index = 0.6
-                
-            market_signals = {
+                market_volatility = min(float(abs(recent_close - prev_close) / prev_close * 10), 1.0)
+
+            global_signals = {
                 'market_volatility': market_volatility,
-                'supply_chain_index': supply_chain_index,
-                'tech_adoption_rate': 0.98, # ટેક્નોલોજી ગ્રોથ ઇન્ડેક્સ
-                'global_sentiment': 0.99
+                'supply_chain_index': forest_index, # Using environmental health index as a proxy
+                'tech_adoption_rate': tech_sentiment,
+                'global_sentiment': middle_class_index,
+                'total_population': population
             }
-            print("Live Market Signals Retrieved Successfully via yfinance!")
-            return market_signals
+            print("Global Planetary & Market Data Retrieved Successfully!")
+            return global_signals
             
         except Exception as e:
-            print(f"Error fetching live data, falling back to default signals: {e}")
+            print(f"Error fetching global data, using fallback defaults: {e}")
             return {
-                'market_volatility': 0.5,
-                'supply_chain_index': 0.5,
-                'tech_adoption_rate': 0.9,
-                'global_sentiment': 0.9
+                'market_volatility': 0.05,
+                'supply_chain_index': 0.31,
+                'tech_adoption_rate': 0.95,
+                'global_sentiment': 0.60,
+                'total_population': 8000000000
             }
 
 if __name__ == "__main__":
     engine = DataIngestionEngine()
-    signals = engine.fetch_live_market_data()
-    print("Market Signals:", signals)
+    signals = engine.fetch_global_planetary_data()
+    print("Global Signals:", signals)
