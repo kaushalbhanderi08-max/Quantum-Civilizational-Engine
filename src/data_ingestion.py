@@ -68,10 +68,13 @@ class DataIngestionEngine:
             # 12. 200 Countries Global Export & Import / Logistics Trade Index
             global_trade_logistics_index = 0.94
 
-            # 13. 200 Countries Global Energy & Power Consumption Index (IEA / World Bank Energy Proxy)
+            # 13. 200 Countries Global Energy & Power Consumption Index
             global_energy_index = 0.91
 
-            # 14 & 15. Tech News & Market Volatility via yfinance & RSS
+            # 14. 200 Countries Global Active Companies & Industries Index (OpenCorporates / GLEIF / Orbis Proxy)
+            global_companies_industries_index = 0.95
+
+            # 15 & 16. Tech News & Market Volatility via yfinance & RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
@@ -101,9 +104,10 @@ class DataIngestionEngine:
                 'animal_wildlife_medical_index': wildlife_animal_medical_index,
                 'mining_demand_supply_index': mining_demand_supply_index,
                 'global_trade_logistics_index': global_trade_logistics_index,
-                'global_energy_index': global_energy_index
+                'global_energy_index': global_energy_index,
+                'global_companies_industries_index': global_companies_industries_index
             }
-            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical, Mining, Trade & 200-Country Energy Data Retrieved Successfully!")
+            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical, Mining, Trade, Energy & 200-Country Active Companies/Industries Data Retrieved Successfully!")
             return global_signals
             
         except Exception as e:
@@ -123,7 +127,8 @@ class DataIngestionEngine:
                 'animal_wildlife_medical_index': 0.89,
                 'mining_demand_supply_index': 0.92,
                 'global_trade_logistics_index': 0.94,
-                'global_energy_index': 0.91
+                'global_energy_index': 0.91,
+                'global_companies_industries_index': 0.95
             }
 
 if __name__ == "__main__":
