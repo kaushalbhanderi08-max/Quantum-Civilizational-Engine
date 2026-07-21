@@ -18,7 +18,7 @@ jobs:
           python-version: '3.10'
 
       - name: Install dependencies
-        run: pip install pandas numpy qiskit qiskit-aer yfinance
+        run: pip install pandas numpy qiskit qiskit-aer yfinance wbgapi feedparser
 
       - name: List files
         run: ls -R
@@ -37,5 +37,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Auto-generated Quantum Dashboard with Live Market API & 1350-Qubit Engine" || exit 0
+          git commit -m "Auto-generated Quantum Dashboard with Global World Bank & Tech Feeds" || exit 0
           git push
