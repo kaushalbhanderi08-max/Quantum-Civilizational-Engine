@@ -10,7 +10,7 @@ class DataIngestionEngine:
         
     def fetch_global_planetary_data(self):
         try:
-            # 1. World Bank Population (Safe parsing)
+            # 1. World Bank Population
             pop_raw = wb.data.get('SP.POP.TOTL', 'WLD', mrv=1)
             population = 8000000000.0
             if isinstance(pop_raw, list) and len(pop_raw) > 0:
@@ -31,14 +31,27 @@ class DataIngestionEngine:
                 val = gni_raw[0].get('value') if isinstance(gni_raw[0], dict) else getattr(gni_raw[0], 'value', None)
                 if val: middle_class_index = min(float(val) / 50000.0, 1.0)
 
-            # 4 & 5. Tech News Feeds via RSS
+            # 4. Human Food & Agricultural Consumption Proxy (World Bank Agriculture Value Added / Food Production Index)
+            food_raw = wb.data.get('AG.PRD.FOOD.XD', 'WLD', mrv=1)
+            human_food_index = 0.85
+            if isinstance(food_raw, list) and len(food_raw) > 0:
+                val = food_raw[0].get('value') if isinstance(food_raw[0], dict) else getattr(food_raw[0], 'value', None)
+                if val: human_food_index = min(float(val) / 150.0, 1.0)
+
+            # 5. Animal, Birds, Water Life / Marine Life Consumption & Biodiversity Proxy (Fisheries production / Land use)
+            fish_raw = wb.data.get('ER.FSH.CAPT.MT', 'WLD', mrv=1) # Capture fisheries production (Water life / marine consumption proxy)
+            water_life_index = 0.70
+            if isinstance(fish_raw, list) and len(fish_raw) > 0:
+                val = fish_raw[0].get('value') if isinstance(fish_raw[0], dict) else getattr(fish_raw[0], 'value', None)
+                if val: water_life_index = min(float(val) / 100000000.0, 1.0)
+
+            # 6 & 7. Tech News & Market Volatility via yfinance & RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
             if feed.entries:
                 tech_sentiment = min(0.99, 0.90 + (len(feed.entries) / 1000.0))
 
-            # Market Volatility via yfinance
             ticker = yf.Ticker("^GSPC")
             history = ticker.history(period="5d")
             market_volatility = 0.05
@@ -52,9 +65,11 @@ class DataIngestionEngine:
                 'supply_chain_index': forest_index,
                 'tech_adoption_rate': tech_sentiment,
                 'global_sentiment': middle_class_index,
-                'total_population': population
+                'total_population': population,
+                'human_food_consumption': human_food_index,
+                'water_life_consumption': water_life_index
             }
-            print("Global Planetary & Market Data Retrieved Successfully!")
+            print("Global Planetary, Market & Food Consumption Data Retrieved Successfully!")
             return global_signals
             
         except Exception as e:
@@ -64,7 +79,9 @@ class DataIngestionEngine:
                 'supply_chain_index': 0.31,
                 'tech_adoption_rate': 0.95,
                 'global_sentiment': 0.60,
-                'total_population': 8000000000
+                'total_population': 8000000000,
+                'human_food_consumption': 0.85,
+                'water_life_consumption': 0.70
             }
 
 if __name__ == "__main__":
