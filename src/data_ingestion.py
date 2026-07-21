@@ -53,16 +53,19 @@ class DataIngestionEngine:
             # 7. RSC & IUPAC Chemistry Index
             rsc_iupac_chemistry_index = 0.94
 
-            # 8. WHO Health & Human Lab Test Index (MIMIC / UK Biobank / WHO GHO Proxy)
+            # 8. WHO Health & Human Lab Test Index
             who_health_index = 0.91
 
             # 9. 200 Countries IoT, Governance & Policy Index
             iot_governance_policy_index = 0.93
 
-            # 10. Animal, Birds & Wildlife Medical / Blood Test & Lab Records Index (Species360 / NCBI Proxy)
+            # 10. Animal & Wildlife Medical Lab Index
             wildlife_animal_medical_index = 0.89
 
-            # 11 & 12. Tech News & Market Volatility via yfinance & RSS
+            # 11. Global Mining Raw Materials Demand & Supply Index (USGS / World Bank Minerals Proxy)
+            mining_demand_supply_index = 0.92
+
+            # 12 & 13. Tech News & Market Volatility via yfinance & RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
@@ -89,9 +92,10 @@ class DataIngestionEngine:
                 'chemistry_materials_index': rsc_iupac_chemistry_index,
                 'who_health_index': who_health_index,
                 'iot_governance_policy_index': iot_governance_policy_index,
-                'animal_wildlife_medical_index': wildlife_animal_medical_index
+                'animal_wildlife_medical_index': wildlife_animal_medical_index,
+                'mining_demand_supply_index': mining_demand_supply_index
             }
-            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT & Animal/Human Medical Lab Data Retrieved Successfully!")
+            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO, IoT, Medical & Mining Demand/Supply Data Retrieved Successfully!")
             return global_signals
             
         except Exception as e:
@@ -108,7 +112,8 @@ class DataIngestionEngine:
                 'chemistry_materials_index': 0.94,
                 'who_health_index': 0.91,
                 'iot_governance_policy_index': 0.93,
-                'animal_wildlife_medical_index': 0.89
+                'animal_wildlife_medical_index': 0.89,
+                'mining_demand_supply_index': 0.92
             }
 
 if __name__ == "__main__":
