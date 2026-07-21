@@ -9,35 +9,36 @@ class DataIngestionEngine:
         pass
         
     def fetch_global_planetary_data(self):
-        """
-        1. World Bank Demographics (Population, Birth/Death rates)
-        2. Environment & Wildlife / Biodiversity Proxy
-        3. WTO / World Bank Economic Classes & Human Consumption
-        4. WEF Strategic Intelligence & Tech News via RSS
-        """
         try:
-            # 1. World Bank Population & Vital Statistics (SP.POP.TOTL, SP.DYN.CBRT.IN, SP.DYN.CDRT.IN)
-            pop_data = wb.data.get('SP.POP.TOTL', 'WLD', mrv=1)
-            population = float(next(iter(pop_data), {}).get('value', 8000000000))
-            
-            # 2. Environment / Tree / Biodiversity Proxy (Forest area % or CO2 emissions index from World Bank)
-            forest_data = wb.data.get('AG.LND.FRST.ZS', 'WLD', mrv=1)
-            forest_index = float(next(iter(forest_data), {}).get('value', 31.0)) / 100.0 # Normalized
-            
-            # 3. Economic Classes / Consumption Proxy (World Bank Poverty Headcount or GNI per capita)
-            gni_data = wb.data.get('NY.GNP.PCAP.CD', 'WLD', mrv=1)
-            gni_value = float(next(iter(gni_data), {}).get('value', 12000.0))
-            middle_class_index = min(gni_value / 50000.0, 1.0)
-            
-            # 4 & 5. WEF / Tech News Feeds via Free RSS (Yahoo Finance Tech / TechCrunch / Reuters)
+            # 1. World Bank Population (Safe parsing)
+            pop_raw = wb.data.get('SP.POP.TOTL', 'WLD', mrv=1)
+            population = 8000000000.0
+            if isinstance(pop_raw, list) and len(pop_raw) > 0:
+                val = pop_raw[0].get('value') if isinstance(pop_raw[0], dict) else getattr(pop_raw[0], 'value', None)
+                if val: population = float(val)
+
+            # 2. Environment / Forest Area Proxy
+            forest_raw = wb.data.get('AG.LND.FRST.ZS', 'WLD', mrv=1)
+            forest_index = 0.31
+            if isinstance(forest_raw, list) and len(forest_raw) > 0:
+                val = forest_raw[0].get('value') if isinstance(forest_raw[0], dict) else getattr(forest_raw[0], 'value', None)
+                if val: forest_index = float(val) / 100.0
+
+            # 3. GNI per capita Proxy for Middle Class Index
+            gni_raw = wb.data.get('NY.GNP.PCAP.CD', 'WLD', mrv=1)
+            middle_class_index = 0.60
+            if isinstance(gni_raw, list) and len(gni_raw) > 0:
+                val = gni_raw[0].get('value') if isinstance(gni_raw[0], dict) else getattr(gni_raw[0], 'value', None)
+                if val: middle_class_index = min(float(val) / 50000.0, 1.0)
+
+            # 4 & 5. Tech News Feeds via RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
             if feed.entries:
-                # જો ન્યૂઝ ફીડ્સ ચાલુ હોય તો ટેક સેન્ટિમેન્ટ કેલ્ક્યુલેટ કરો
                 tech_sentiment = min(0.99, 0.90 + (len(feed.entries) / 1000.0))
 
-            # Existing Market Volatility via yfinance
+            # Market Volatility via yfinance
             ticker = yf.Ticker("^GSPC")
             history = ticker.history(period="5d")
             market_volatility = 0.05
@@ -48,7 +49,7 @@ class DataIngestionEngine:
 
             global_signals = {
                 'market_volatility': market_volatility,
-                'supply_chain_index': forest_index, # Using environmental health index as a proxy
+                'supply_chain_index': forest_index,
                 'tech_adoption_rate': tech_sentiment,
                 'global_sentiment': middle_class_index,
                 'total_population': population
