@@ -15,10 +15,12 @@ jobs:
           python-version: '3.9'
           
       - name: Install dependencies
-        run: pip install pandas numpy
+        run: pip install pandas numpy qiskit qiskit-aer
         
       - name: List files
         run: ls -R
         
-      - name: Run Preprocessor
-        run: python src/data_preprocessor.py
+      - name: Run Ingestion & Preprocessor
+        run: |
+          python src/data_preprocessor.py
+          python src/data_ingestion.py
