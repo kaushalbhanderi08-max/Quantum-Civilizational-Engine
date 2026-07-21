@@ -23,11 +23,12 @@ jobs:
       - name: List files
         run: ls -R
 
-      - name: Run Full Quantum Pipeline
+      - name: Run Full Quantum Pipeline & Planetary Simulation
         run: |
           python src/data_preprocessor.py
           python src/data_ingestion.py
           python src/quantum_matrix_engine.py
+          python src/planetary_life_engine.py
           python src/decision_decoder.py
           python src/dashboard_generator.py
 
@@ -36,5 +37,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Auto-generated Quantum Dashboard" || exit 0
+          git commit -m "Auto-generated Quantum Dashboard with 1350-Qubit Planetary Engine" || exit 0
           git push
