@@ -70,9 +70,9 @@ def generate_html_dashboard(binary_state):
     """
 
     os.makedirs('output', exist_ok=True)
-    with open('output/dashboard.html', 'w', encoding='utf-8') as f:
+    with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Dashboard successfully generated at output/dashboard.html")
+    print("Dashboard successfully generated at index.html")
 
 if __name__ == "__main__":
     generate_html_dashboard("10111010010010")
