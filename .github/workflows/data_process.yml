@@ -2,24 +2,27 @@ name: Data Preprocessing Engine
 
 on: [push]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          
+
       - name: Install dependencies
         run: pip install pandas numpy qiskit qiskit-aer
-        
+
       - name: List files
         run: ls -R
-        
+
       - name: Run Full Quantum Pipeline
         run: |
           python src/data_preprocessor.py
@@ -27,3 +30,11 @@ jobs:
           python src/quantum_matrix_engine.py
           python src/decision_decoder.py
           python src/dashboard_generator.py
+
+      - name: Commit & Push Generated Dashboard
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add output/dashboard.html
+          git commit -m "Auto-generated Quantum Dashboard" || exit 0
+          git push
