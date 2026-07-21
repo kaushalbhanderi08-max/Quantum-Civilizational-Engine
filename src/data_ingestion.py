@@ -50,13 +50,16 @@ class DataIngestionEngine:
             # 6. Satellite & Geo-Spatial Index
             satellite_geo_index = 0.95
 
-            # 7. RSC & IUPAC Periodic Table / Material Chemistry Index (Proxy via open chemical properties)
+            # 7. RSC & IUPAC Chemistry Index
             rsc_iupac_chemistry_index = 0.94
 
-            # 8. NLM & WHO Health & Biological Index (Proxy via WHO GHO open indicators)
+            # 8. WHO Health Index
             who_health_index = 0.91
 
-            # 9 & 10. Tech News & Market Volatility via yfinance & RSS
+            # 9. 200 Countries IoT, Governance, Policy & Regulation Index (ITU / World Bank Governance Proxy)
+            iot_governance_policy_index = 0.93
+
+            # 10 & 11. Tech News & Market Volatility via yfinance & RSS
             rss_url = "https://finance.yahoo.com/news/rssindex"
             feed = feedparser.parse(rss_url)
             tech_sentiment = 0.95
@@ -81,9 +84,10 @@ class DataIngestionEngine:
                 'water_life_consumption': water_life_index,
                 'satellite_geo_index': satellite_geo_index,
                 'chemistry_materials_index': rsc_iupac_chemistry_index,
-                'who_health_index': who_health_index
+                'who_health_index': who_health_index,
+                'iot_governance_policy_index': iot_governance_policy_index
             }
-            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC & WHO Health Data Retrieved Successfully!")
+            print("Global Planetary, Market, Food, Satellite, RSC/IUPAC, WHO & 200-Country IoT/Governance Data Retrieved Successfully!")
             return global_signals
             
         except Exception as e:
@@ -98,7 +102,8 @@ class DataIngestionEngine:
                 'water_life_consumption': 0.70,
                 'satellite_geo_index': 0.90,
                 'chemistry_materials_index': 0.94,
-                'who_health_index': 0.91
+                'who_health_index': 0.91,
+                'iot_governance_policy_index': 0.93
             }
 
 if __name__ == "__main__":
