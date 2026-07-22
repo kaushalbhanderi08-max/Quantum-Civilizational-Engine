@@ -1,0 +1,43 @@
+{
+    "engine": "Quantum-Civilizational-Engine",
+    "backend": "ibm_kingston",
+    "job_id": "d9flvokinv1c73arhv60",
+    "total_shots": 1040,
+    "top_civilizational_states": [
+        {
+            "node": "Civ-Node-1",
+            "bitstring": "100001000001000010000100000100001000010000010000100001000001",
+            "count": 420,
+            "probability": 0.4038,
+            "entropy_score": 0.5283
+        },
+        {
+            "node": "Civ-Node-2",
+            "bitstring": "100001000001010010000100000100001000010000010000100001000001",
+            "count": 82,
+            "probability": 0.0788,
+            "entropy_score": 0.289
+        },
+        {
+            "node": "Civ-Node-3",
+            "bitstring": "10000100000100001000010000010000100001000001000010000100000101",
+            "count": 78,
+            "probability": 0.075,
+            "entropy_score": 0.2803
+        },
+        {
+            "node": "Civ-Node-4",
+            "bitstring": "100001000001000010000100000100001000010000010100100001000001",
+            "count": 77,
+            "probability": 0.074,
+            "entropy_score": 0.2781
+        },
+        {
+            "node": "Civ-Node-5",
+            "bitstring": "100001000001000010000100000101001000010000010000100001000001",
+            "count": 76,
+            "probability": 0.0731,
+            "entropy_score": 0.2758
+        }
+    ]
+}
